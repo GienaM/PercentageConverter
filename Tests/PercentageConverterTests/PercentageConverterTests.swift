@@ -2,14 +2,9 @@ import XCTest
 @testable import PercentageConverter
 
 final class PercentageConverterTests: XCTestCase {
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct
-        // results.
-        XCTAssertEqual(PercentageConverter().text, "Hello, World!")
+    func testRoundedPercents() {
+        let converter = PercentageConverter(values: 3.626332, 47.989636, 9.596008, 28.788024)
+        let roundedPercents = converter.roundedPercents()
+        XCTAssert(roundedPercents.reduce(0, +) == 100)
     }
-
-    static var allTests = [
-        ("testExample", testExample),
-    ]
 }
