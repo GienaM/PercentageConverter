@@ -10,6 +10,11 @@ public final class PercentageConverter {
         let reminder: Double
     }
 
+    private enum PercentageConverterError: Error {
+        case invalidValues
+    }
+
+
     // MARK: - Initialization
 
     public init(values: [Double]) {
@@ -22,14 +27,19 @@ public final class PercentageConverter {
 
     // MARK: - Public methods
 
-    public func percents() -> [Double] {
+    public func percents() throws -> [Double] {
         let sum = values.reduce(0, +)
+        let percentageList = values.map {  $0 / sum * 100 }
 
-        return values.map {  $0 / sum * 100 }
+        guard percentageList.contains(where: { $0.isNaN == false }) else {
+            throw PercentageConverterError.invalidValues
+        }
+
+        return percentageList
     }
 
-    public func roundedPercents() -> [Int] {
-        let percentageList = percents()
+    public func roundedPercents() throws -> [Int] {
+        let percentageList = try percents()
 
         let total = Int(percentageList.reduce(0, +).rounded())
 
